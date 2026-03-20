@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>World Macro-Financial Dataset</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="MacroFinancialData.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,8 +52,38 @@
     }
     .header-links a:last-child { border-right: none; }
     .header-links a:hover { text-decoration: underline; }
-    .back-link { font-size: 12px; color: #888; text-decoration: none; display: inline-block; margin-bottom: 14px; }
-    .back-link:hover { color: #1a6da5; }
+    /* ── DOWNLOAD DROPDOWN ── */
+    .dl-wrap { position: relative; display: inline-block; }
+    .dl-wrap > a { cursor: default; }
+    .dl-menu {
+      display: none; position: absolute; top: 100%; left: 0;
+      background: #fff; border: 1px solid #ddd; border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-width: 180px;
+      padding: 4px 0; z-index: 300; white-space: nowrap;
+    }
+    .dl-wrap:hover .dl-menu { display: block; }
+    .dl-menu a {
+      display: block; padding: 7px 14px; font-size: 12.5px;
+      color: #1a6da5; text-decoration: none; border-right: none !important;
+      margin-right: 0 !important;
+    }
+    .dl-menu a:hover { background: #f0f7ff; }
+
+    /* ── AUTHORS DROPDOWN ── */
+    .authors-wrap { position: relative; display: inline-block; }
+    .authors-menu {
+      display: none; position: absolute; top: 100%; left: 0;
+      background: #fff; border: 1px solid #ddd; border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-width: 190px;
+      padding: 4px 0; z-index: 300; white-space: nowrap;
+    }
+    .authors-wrap:hover .authors-menu { display: block; }
+    .authors-menu a {
+      display: block; padding: 7px 14px; font-size: 12.5px;
+      color: #1a6da5; text-decoration: none; border-right: none !important;
+      margin-right: 0 !important;
+    }
+    .authors-menu a:hover { background: #f0f7ff; }
 
     /* ── MAIN LAYOUT ── */
     .main { display: flex; gap: 32px; align-items: flex-start; }
@@ -151,7 +182,7 @@
       background: #fff;
     }
     .chart-note {
-      font-size: 11px; color: #999; margin-top: 8px;
+      font-size: 12.5px; color: #999; margin-top: 8px;
       text-align: center; line-height: 1.4;
     }
 
@@ -176,7 +207,7 @@
     footer {
       margin-top: 30px; padding-top: 16px;
       border-top: 1px solid #ebebeb;
-      font-size: 11.5px; color: #888; line-height: 1.5;
+      font-size: 13px; color: #888; line-height: 1.5;
     }
     footer a { color: #1a6da5; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
@@ -192,20 +223,31 @@
 <body>
 <div class="page">
 
-  <a class="back-link" href="../">← Antoine Camous</a>
-
   <header>
     <h1>World Macro-Financial Dataset</h1>
     <p class="subtitle">
       Quarterly data on credit, GDP, equity prices, bond yields and consumer prices for
-      <strong>49 countries</strong> from <strong>1950 to 2019</strong>.
-      Built from IFS (IMF) sources by Camous, Puy &amp; Monnet (2025).
+      <strong>49 countries</strong> from <strong>1950 to 2025</strong>.
+      Built from IFS (IMF) sources by <a href="https://www.banque-france.fr/en/publications-and-statistics/publications/world-cycles-revisited-diverging-trends-prices-and-quantities" style="color:#1a6da5;text-decoration:none;font-weight:500;">Camous, Puy &amp; Monnet (2025)</a>.
       If you use the data, please cite the current version of the working paper as the source of the data.
     </p>
     <div class="header-links">
-      <a href="https://www.ericmonnet.eu/macro-financial-dataset-quarterly-since-1950">Documentation</a>
-      <a href="https://didomena.ehess.fr/concern/data_sets/qr46r157m?locale=en">Download data</a>
+      <span class="dl-wrap">
+        <a href="#">Download data ▾</a>
+        <div class="dl-menu">
+          <a href="MacroFinancialDataset_2026.csv" download>Dataset (CSV)</a>
+          <a href="README_UPDATE_WEB.txt" download>Readme</a>
+        </div>
+      </span>
       <a href="https://www.banque-france.fr/en/publications-and-statistics/publications/world-cycles-revisited-diverging-trends-prices-and-quantities">Working paper</a>
+      <span class="authors-wrap">
+        <a href="#">Authors ▾</a>
+        <div class="authors-menu">
+          <a href="https://acamous.github.io" target="_blank">Antoine Camous</a>
+          <a href="https://www.ericmonnet.eu" target="_blank">Eric Monnet</a>
+          <a href="https://sites.google.com/view/damienpuy" target="_blank">Damien Puy</a>
+        </div>
+      </span>
     </div>
   </header>
 
@@ -232,12 +274,12 @@
         <span class="group-label">Period</span>
         <div class="slider-row">
           <span class="lbl">From</span>
-          <input type="range" id="sliderStart" min="1950" max="2019" step="1">
+          <input type="range" id="sliderStart" min="1950" max="2025" step="1">
           <span class="val" id="lblStart"></span>
         </div>
         <div class="slider-row">
           <span class="lbl">To</span>
-          <input type="range" id="sliderEnd" min="1950" max="2019" step="1">
+          <input type="range" id="sliderEnd" min="1950" max="2025" step="1">
           <span class="val" id="lblEnd"></span>
         </div>
       </div>
@@ -270,10 +312,9 @@
   <footer>
     <strong>Citation:</strong> Camous, A., Puy, D. &amp; Monnet, E. (2025).
     "World Cycles Revisited: Diverging Trends in Prices and Quantities."
-    Data available at <a href="https://didomena.ehess.fr/concern/data_sets/qr46r157m?locale=en">EHESS Didomena</a>
-    and <a href="https://www.ericmonnet.eu/macro-financial-dataset-quarterly-since-1950">ericmonnet.eu</a>.
-    Source: IFS (IMF).
-    We refer readers to the <a href="https://www.ericmonnet.eu/macro-financial-dataset-quarterly-since-1950">documentation</a> for important details about the methodology, sources and definitions.
+    <a href="https://www.banque-france.fr/en/publications-and-statistics/publications/world-cycles-revisited-diverging-trends-prices-and-quantities">BDF Working Paper 592</a>.
+    Recent data updated with IMF and FRED public databases.
+    We refer readers to the paper for important details about the methodology, sources and definitions.
   </footer>
 
 </div>
@@ -295,7 +336,7 @@ const state = {
   variable:  'ifs_r_gdp',
   countries: ['United States', 'France', 'Germany'],
   yearStart: 1970,
-  yearEnd:   2019,
+  yearEnd:   2025,
   transform: 'growth',
 };
 
@@ -337,19 +378,7 @@ function getYLabel() {
 }
 
 /* ── DATA LOAD ── */
-async function loadCSV() {
-  let text;
-  try {
-    const resp = await fetch('MacroFinancialDataset_2020.csv');
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    text = await resp.text();
-  } catch (err) {
-    document.getElementById('loadingOverlay').innerHTML =
-      `<span class="loading-text" style="color:#c0392b">Failed to load data.<br>Make sure the CSV is in the same folder.</span>`;
-    throw err;
-  }
-
-  const { data } = Papa.parse(text, { header: true, skipEmptyLines: true });
+function processRows(data) {
   const cset = new Set();
   for (const row of data) {
     const c = row.country; if (!c) continue;
@@ -367,6 +396,28 @@ async function loadCSV() {
     }
   }
   countries = Array.from(cset).sort();
+}
+
+function loadCSV() {
+  // Use embedded JS data (works with file://), fall back to fetch for server
+  if (window.__MACRO_DATA_CSV__) {
+    const results = Papa.parse(window.__MACRO_DATA_CSV__, { header: true, skipEmptyLines: true });
+    processRows(results.data);
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
+    Papa.parse('MacroFinancialDataset_2026.csv', {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete(results) { processRows(results.data); resolve(); },
+      error(err) {
+        document.getElementById('loadingOverlay').innerHTML =
+          `<span class="loading-text" style="color:#c0392b">Failed to load data.<br>Make sure the CSV is in the same folder.</span>`;
+        reject(err);
+      },
+    });
+  });
 }
 
 /* ── CHART ── */
@@ -451,8 +502,11 @@ function renderChart() {
 
   // Note
   const v = VARS.find(v => v.key === state.variable);
-  document.getElementById('chartNote').textContent =
-    `${v.label} · ${v.unit} · Source: IFS (IMF) via Camous, Puy & Monnet (2025)`;
+  let noteText = `${v.label} · ${v.unit} · Source: IFS (IMF) via Camous, Puy & Monnet (2025)`;
+  if (state.variable === 'ifs_n_shares' && state.transform === 'level') {
+    noteText += ' · Base year: 2015 = 100';
+  }
+  document.getElementById('chartNote').textContent = noteText;
 }
 
 /* ── UI ── */
